@@ -1,10 +1,7 @@
-// File: lib/screens/dashboard/dashboard_screen.dart
+// 📄 lib/screens/dashboard/dashboard_screen.dart
 
 import 'package:flutter/material.dart';
 import '../../widgets/app_drawer.dart';
-
-/// Pantalla principal del dashboard de la aplicación
-/// Contiene botones para navegar a diferentes secciones como Clientes, Pagos y Recorridos.
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});

@@ -1,9 +1,12 @@
+// archivo: card_cliente.dart
+
 import 'package:flutter/material.dart';
 
 class CardCliente extends StatelessWidget {
   final Map<String, dynamic> cliente;
+  final VoidCallback? onEditar;
 
-  const CardCliente({super.key, required this.cliente});
+  const CardCliente({super.key, required this.cliente, this.onEditar});
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +32,7 @@ class CardCliente extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text('# ${cliente['telefono']}'),
+            Text(cliente['dia'] ?? ''),
             const SizedBox(height: 4),
             Text(
               activo ? 'ACTIVO' : 'INACTIVO',
@@ -42,7 +46,9 @@ class CardCliente extends StatelessWidget {
         trailing: PopupMenuButton<String>(
           icon: const Icon(Icons.more_vert),
           onSelected: (value) {
-            // Acciones para editar, eliminar, etc.
+            if (value == 'editar' && onEditar != null) {
+              onEditar!();
+            }
           },
           itemBuilder: (BuildContext context) => [
             const PopupMenuItem(value: 'editar', child: Text('Editar')),

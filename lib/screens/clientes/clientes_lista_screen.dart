@@ -1,3 +1,5 @@
+// archivo: clientes_lista_screen.dart
+
 import 'package:flutter/material.dart';
 import '../../widgets/card_cliente.dart';
 import 'clientes_formulario_screen.dart';
@@ -14,14 +16,52 @@ class _ClientesListaScreenState extends State<ClientesListaScreen>
   late TabController _tabController;
 
   final List<Map<String, dynamic>> _clientes = [
-    {'nombre': 'JUAN TOALA', 'telefono': '0980032989', 'activo': false},
-    {'nombre': 'DARWIN CALLE', 'telefono': '0980330001', 'activo': true},
+    {
+      'nombre': 'JUAN TOALA',
+      'apellido': 'TOALA',
+      'telefono': '0980032989',
+      'referencia': 'Cerca del parque',
+      'ubicacion': null,
+      'dia': 'Lunes',
+      'activo': false,
+    },
+    {
+      'nombre': 'DARWIN CALLE',
+      'apellido': 'CALLE',
+      'telefono': '0980330001',
+      'referencia': 'Esquina de la tienda',
+      'ubicacion': null,
+      'dia': 'Viernes',
+      'activo': true,
+    },
   ];
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
+  }
+
+  void _abrirFormulario({Map<String, dynamic>? cliente}) async {
+    final nuevoCliente = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ClientesFormularioScreen(cliente: cliente),
+      ),
+    );
+
+    if (nuevoCliente != null) {
+      setState(() {
+        if (cliente != null) {
+          // editar
+          final index = _clientes.indexOf(cliente);
+          _clientes[index] = nuevoCliente;
+        } else {
+          // nuevo
+          _clientes.add(nuevoCliente);
+        }
+      });
+    }
   }
 
   @override
@@ -36,14 +76,7 @@ class _ClientesListaScreenState extends State<ClientesListaScreen>
         actions: [
           IconButton(icon: const Icon(Icons.search), onPressed: () {}),
           TextButton.icon(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const ClientesFormularioScreen(),
-                ),
-              );
-            },
+            onPressed: () => _abrirFormulario(),
             icon: const Icon(Icons.add, color: Colors.white),
             label: const Text('Nuevo', style: TextStyle(color: Colors.white)),
           ),
@@ -73,7 +106,10 @@ class _ClientesListaScreenState extends State<ClientesListaScreen>
       itemCount: clientes.length,
       itemBuilder: (context, index) {
         final cliente = clientes[index];
-        return CardCliente(cliente: cliente);
+        return CardCliente(
+          cliente: cliente,
+          onEditar: () => _abrirFormulario(cliente: cliente),
+        );
       },
     );
   }
