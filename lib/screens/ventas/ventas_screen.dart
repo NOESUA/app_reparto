@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'metodo_pago_screen.dart'; // Asegurate de tener import correcto
 
 class VentasScreen extends StatefulWidget {
   const VentasScreen({super.key});
@@ -8,25 +9,32 @@ class VentasScreen extends StatefulWidget {
 }
 
 class _VentasScreenState extends State<VentasScreen> {
-  // Ejemplo de estructura de productos (esto será dinámico con base de datos luego)
+  String? clienteSeleccionado;
+  double deudaCliente = 0;
+
+  // Lista simulada de productos
   final List<Map<String, dynamic>> productos = [
-    {'nombre': 'Bidón Agua 20L', 'precio': 1700.00, 'cantidad': 0},
-    {'nombre': 'Dispenser de Mesa', 'precio': 2500.00, 'cantidad': 0},
-    {'nombre': 'Bomba Eléctrica Recargable', 'precio': 3200.00, 'cantidad': 0},
+    {'nombre': 'Soda 2L', 'precio': 1000.0, 'cantidad': 0},
+    {'nombre': 'Agua 5L', 'precio': 1800.0, 'cantidad': 0},
+    {'nombre': 'Soda 600ml', 'precio': 700.0, 'cantidad': 0},
   ];
 
-  double get total => productos.fold(
-    0,
-    (sum, item) => sum + (item['cantidad'] * item['precio']),
-  );
+  final List<String> clientes = ['Juan Pérez', 'Ana Torres', 'Carlos López'];
 
-  void incrementar(int index) {
+  double calcularTotal() {
+    return productos.fold(
+      0,
+      (total, item) => total + item['precio'] * item['cantidad'],
+    );
+  }
+
+  void _aumentarCantidad(int index) {
     setState(() {
       productos[index]['cantidad']++;
     });
   }
 
-  void decrementar(int index) {
+  void _disminuirCantidad(int index) {
     setState(() {
       if (productos[index]['cantidad'] > 0) {
         productos[index]['cantidad']--;
@@ -34,99 +42,114 @@ class _VentasScreenState extends State<VentasScreen> {
     });
   }
 
+  void _continuarConPago() {
+    final totalVenta = calcularTotal();
+    if (clienteSeleccionado == null) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Selecciona un cliente')));
+      return;
+    }
+    if (totalVenta == 0) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Agrega al menos un producto')),
+      );
+      return;
+    }
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => MetodoPagoScreen(
+          totalVenta: totalVenta,
+          cliente: clienteSeleccionado!,
+          deuda: deudaCliente,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final total = calcularTotal();
+
     return Scaffold(
       appBar: AppBar(title: const Text('Ventas')),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16),
         child: Column(
           children: [
+            DropdownButtonFormField<String>(
+              decoration: const InputDecoration(
+                labelText: 'Seleccionar cliente',
+                border: OutlineInputBorder(),
+              ),
+              value: clienteSeleccionado,
+              items: clientes.map((cliente) {
+                return DropdownMenuItem(value: cliente, child: Text(cliente));
+              }).toList(),
+              onChanged: (value) {
+                setState(() {
+                  clienteSeleccionado = value;
+                  // Simulamos deuda (en real lo traerías desde una DB/API)
+                  deudaCliente = clienteSeleccionado == 'Juan Pérez' ? 5000 : 0;
+                });
+              },
+            ),
+            const SizedBox(height: 20),
+            const Text(
+              'Productos:',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
             Expanded(
               child: ListView.builder(
                 itemCount: productos.length,
                 itemBuilder: (context, index) {
                   final producto = productos[index];
-                  return Card(
-                    margin: const EdgeInsets.symmetric(vertical: 10),
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            producto['nombre'],
-                            style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Precio: \$${producto['precio'].toStringAsFixed(2)}',
-                              ),
-                              Row(
-                                children: [
-                                  IconButton(
-                                    icon: const Icon(Icons.remove),
-                                    onPressed: () => decrementar(index),
-                                  ),
-                                  Text(
-                                    producto['cantidad'].toString(),
-                                    style: const TextStyle(fontSize: 16),
-                                  ),
-                                  IconButton(
-                                    icon: const Icon(Icons.add),
-                                    onPressed: () => incrementar(index),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
+                  return ListTile(
+                    title: Text(producto['nombre']),
+                    subtitle: Text(
+                      '\$${producto['precio'].toStringAsFixed(2)}',
+                    ),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          onPressed: () => _disminuirCantidad(index),
+                          icon: const Icon(Icons.remove),
+                        ),
+                        Text('${producto['cantidad']}'),
+                        IconButton(
+                          onPressed: () => _aumentarCantidad(index),
+                          icon: const Icon(Icons.add),
+                        ),
+                      ],
                     ),
                   );
                 },
               ),
             ),
             const Divider(),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'Total:',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    '\$${total.toStringAsFixed(2)}',
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Total:',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  '\$${total.toStringAsFixed(2)}',
+                  style: const TextStyle(fontSize: 18, color: Colors.green),
+                ),
+              ],
             ),
-            ElevatedButton(
-              onPressed: () {
-                // Aquí conectar con métodos de pago
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Ir a medios de pago')),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                minimumSize: const Size.fromHeight(50),
-                backgroundColor: Colors.green,
-              ),
-              child: const Text(
-                'Continuar a Pago',
-                style: TextStyle(fontSize: 18),
+            const SizedBox(height: 20),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton.icon(
+                onPressed: _continuarConPago,
+                icon: const Icon(Icons.payment),
+                label: const Text('Continuar con el pago'),
               ),
             ),
           ],
