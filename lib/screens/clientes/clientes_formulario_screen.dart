@@ -1,5 +1,3 @@
-// archivo: clientes_formulario_screen.dart
-
 import 'package:flutter/material.dart';
 import 'clientes_mapa_screen.dart';
 
@@ -20,6 +18,7 @@ class _ClientesFormularioScreenState extends State<ClientesFormularioScreen> {
   late TextEditingController _apellidosController;
   late TextEditingController _telefonoController;
   late TextEditingController _referenciaController;
+
   String? _ubicacion;
   String _dia = 'Lunes';
 
@@ -42,10 +41,7 @@ class _ClientesFormularioScreenState extends State<ClientesFormularioScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Formulario de cliente'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
-        ),
+        leading: BackButton(),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -92,6 +88,7 @@ class _ClientesFormularioScreenState extends State<ClientesFormularioScreen> {
               const SizedBox(height: 10),
               TextFormField(
                 controller: _telefonoController,
+                keyboardType: TextInputType.phone,
                 decoration: const InputDecoration(
                   labelText: 'Teléfono',
                   prefixIcon: Icon(Icons.phone),
@@ -106,6 +103,8 @@ class _ClientesFormularioScreenState extends State<ClientesFormularioScreen> {
                 ),
               ),
               const SizedBox(height: 16),
+
+              /// BOTÓN DE UBICACIÓN
               ElevatedButton.icon(
                 onPressed: () async {
                   final result = await Navigator.push(
@@ -114,21 +113,21 @@ class _ClientesFormularioScreenState extends State<ClientesFormularioScreen> {
                       builder: (context) => const ClientesMapaScreen(),
                     ),
                   );
-                  setState(() {
-                    _ubicacion = result;
-                  });
+                  setState(() => _ubicacion = result);
                 },
                 icon: const Icon(Icons.location_pin),
                 label: const Text('Seleccionar ubicación'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.redAccent,
-                ),
               ),
+              const SizedBox(height: 8),
               Text(
                 _ubicacion ?? 'Sin seleccionar ubicación',
-                style: const TextStyle(color: Colors.red),
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: Theme.of(context).colorScheme.error,
+                ),
               ),
               const SizedBox(height: 16),
+
+              /// BOTÓN DE REGISTRO
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
