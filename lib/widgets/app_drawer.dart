@@ -1,106 +1,77 @@
-// lib/widgets/app_drawer.dart
 import 'package:flutter/material.dart';
+import 'package:app_soda/core/theme.dart';
+import 'package:app_soda/main.dart'; // Para acceso a Routes
 
+/// Drawer lateral con las principales secciones de la app
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
-          const DrawerHeader(
-            decoration: BoxDecoration(color: Colors.blue),
+          // Encabezado con usuario y bienvenida
+          DrawerHeader(
+            decoration: BoxDecoration(color: AppColors.primario),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  'PABLO VICINO',
-                  style: TextStyle(fontSize: 20, color: Colors.white),
-                ),
-                SizedBox(height: 4),
-                Text('1723776280', style: TextStyle(color: Colors.white70)),
-                SizedBox(height: 8),
+                Text('PABLO VICINO', style: theme.textTheme.headlineSmall),
+                const SizedBox(height: 4),
+                Text('1723776280', style: theme.textTheme.bodySmall),
+                const SizedBox(height: 8),
                 Text(
                   '¡Bienvenido a la aplicación!',
-                  style: TextStyle(color: Colors.white70),
+                  style: theme.textTheme.bodyMedium,
                 ),
               ],
             ),
           ),
 
-          // --- Menú principal ---
-          _item(
-            context,
-            icon: Icons.person,
-            label: 'Mi perfil',
-            route: '/perfil',
-          ),
-          _item(
-            context,
-            icon: Icons.people,
+          // Items del menú
+          _DrawerItem(label: '👤 Mi perfil', route: Routes.perfil),
+          _DrawerItem(
             label: '📋 Gestión de Clientes',
-            route: '/clientes',
+            route: Routes.clientesLista,
           ),
-          _item(
-            context,
-            icon: Icons.local_drink,
+          _DrawerItem(
             label: '🛒 Registro de Productos',
-            route: '/productos',
+            route: Routes.productos,
           ),
-          _item(
-            context,
-            icon: Icons.payment,
-            label: '💳 Gestión de Pagos',
-            route: '/ventas',
-          ),
-          _item(
-            context,
-            icon: Icons.bar_chart,
-            label: '📈 Reportes',
-            route: '/reportes',
-          ),
-          _item(
-            context,
-            icon: Icons.map,
-            label: '🗺️ Gestión de Rutas',
-            route: '/recorridos',
-          ),
-          _item(
-            context,
-            icon: Icons.settings,
-            label: '⚙️ Configuración',
-            route: '/configuracion',
-          ),
-          const Divider(),
-          _item(
-            context,
-            icon: Icons.logout,
-            label: 'Cerrar sesión',
-            route: '/', // ← normalmente vuelve al login
-          ),
+          _DrawerItem(label: '💳 Gestión de Pagos', route: Routes.ventas),
+          _DrawerItem(label: '📈 Reportes', route: Routes.reportes),
+          _DrawerItem(label: '🗺️ Gestión de Rutas', route: Routes.recorridos),
+          _DrawerItem(label: '⚙️ Configuración', route: Routes.configuracion),
+          const Divider(color: Colors.white24),
+          _DrawerItem(label: '🚪 Cerrar sesión', route: Routes.logout),
         ],
       ),
     );
   }
+}
 
-  // Helper privado
-  ListTile _item(
-    BuildContext ctx, {
-    required IconData icon,
-    required String label,
-    required String route,
-  }) {
+/// Widget privado para un item del Drawer
+class _DrawerItem extends StatelessWidget {
+  final String label;
+  final String route;
+
+  const _DrawerItem({required this.label, required this.route});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return ListTile(
-      leading: Icon(icon),
-      title: Text(label),
+      title: Text(label, style: theme.textTheme.bodyLarge),
       onTap: () {
-        Navigator.pop(ctx); // cerrar drawer
-        Navigator.pushNamed(ctx, route);
+        Navigator.pop(context);
+        Navigator.pushReplacementNamed(context, route);
       },
+      contentPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 4),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      hoverColor: AppColors.primario.withAlpha(26),
     );
   }
 }
-// Este widget crea un menú lateral (drawer) con opciones de navegación
-// y un encabezado con el nombre del usuario y un mensaje de bienvenida.

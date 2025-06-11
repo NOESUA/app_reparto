@@ -3,6 +3,8 @@
 import 'package:flutter/material.dart';
 import '../../widgets/app_drawer.dart';
 
+
+
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
 
@@ -13,8 +15,18 @@ class DashboardScreen extends StatelessWidget {
     return Scaffold(
       drawer: const AppDrawer(),
       appBar: AppBar(
-        title: const Text('APP REPARTO'),
-        backgroundColor: Colors.blueAccent,
+        backgroundColor: const Color(0xFF224466),
+        elevation: 0,
+        title: const Text(
+          'APP REPARTO',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 26,
+            letterSpacing: 0.5,
+          ),
+        ),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: Center(
         child: Column(

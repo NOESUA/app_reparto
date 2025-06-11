@@ -1,8 +1,8 @@
 // archivo: clientes_lista_screen.dart
 
 import 'package:flutter/material.dart';
-import '../../widgets/card_cliente.dart';
-import 'clientes_formulario_screen.dart';
+import 'package:app_soda/widgets/card_cliente.dart';
+import 'package:app_soda/screens/clientes/clientes_formulario_screen.dart';
 
 class ClientesListaScreen extends StatefulWidget {
   const ClientesListaScreen({super.key});

@@ -1,58 +1,40 @@
-// archivo: card_cliente.dart
-
 import 'package:flutter/material.dart';
 
+/// Tarjeta de cliente con estado activo/inactivo y opciones de menú
 class CardCliente extends StatelessWidget {
   final Map<String, dynamic> cliente;
-  final VoidCallback? onEditar;
+  final VoidCallback onEditar;
 
-  const CardCliente({super.key, required this.cliente, this.onEditar});
+  const CardCliente({super.key, required this.cliente, required this.onEditar});
 
   @override
   Widget build(BuildContext context) {
-    final bool activo = cliente['activo'] ?? false;
-
     return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      elevation: 2,
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: ListTile(
-        leading: CircleAvatar(
-          backgroundColor: activo ? Colors.green : Colors.grey,
-          child: Text(
-            cliente['nombre'][0],
-            style: const TextStyle(color: Colors.white),
-          ),
-        ),
+        contentPadding: const EdgeInsets.all(16),
         title: Text(
-          cliente['nombre'],
-          style: const TextStyle(fontWeight: FontWeight.bold),
+          '${cliente['nombre']} ${cliente['apellido']}',
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
         ),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('# ${cliente['telefono']}'),
-            Text(cliente['dia'] ?? ''),
-            const SizedBox(height: 4),
-            Text(
-              activo ? 'ACTIVO' : 'INACTIVO',
-              style: TextStyle(
-                color: activo ? Colors.green : Colors.red,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
+            const SizedBox(height: 8),
+            Text('Teléfono: ${cliente['telefono']}'),
+            Text('Día: ${cliente['dia']}'),
+            Text('Referencia: ${cliente['referencia']}'),
           ],
         ),
-        trailing: PopupMenuButton<String>(
-          icon: const Icon(Icons.more_vert),
-          onSelected: (value) {
-            if (value == 'editar' && onEditar != null) {
-              onEditar!();
-            }
-          },
-          itemBuilder: (BuildContext context) => [
-            const PopupMenuItem(value: 'editar', child: Text('Editar')),
-            const PopupMenuItem(value: 'eliminar', child: Text('Eliminar')),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              cliente['activo'] ? Icons.check_circle : Icons.cancel,
+              color: cliente['activo'] ? Colors.green : Colors.red,
+            ),
+            const SizedBox(width: 8),
+            IconButton(icon: const Icon(Icons.edit), onPressed: onEditar),
           ],
         ),
       ),

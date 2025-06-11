@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'metodo_pago_screen.dart'; // Asegurate de tener import correcto
+import 'package:app_soda/screens/ventas/metodo_pago_screen.dart';
 
 class VentasScreen extends StatefulWidget {
   const VentasScreen({super.key});
@@ -45,14 +45,26 @@ class _VentasScreenState extends State<VentasScreen> {
   void _continuarConPago() {
     final totalVenta = calcularTotal();
     if (clienteSeleccionado == null) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Selecciona un cliente')));
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Selecciona un cliente',
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          ),
+          backgroundColor: Colors.orange,
+        ),
+      );
       return;
     }
     if (totalVenta == 0) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Agrega al menos un producto')),
+        const SnackBar(
+          content: Text(
+            'Agrega al menos un producto',
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          ),
+          backgroundColor: Colors.orange,
+        ),
       );
       return;
     }
@@ -74,7 +86,20 @@ class _VentasScreenState extends State<VentasScreen> {
     final total = calcularTotal();
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Ventas')),
+      appBar: AppBar(
+        backgroundColor: const Color(0xFF224466),
+        elevation: 0,
+        title: const Text(
+          'Ventas',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 26,
+            letterSpacing: 0.5,
+          ),
+        ),
+        iconTheme: const IconThemeData(color: Colors.white),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -99,7 +124,7 @@ class _VentasScreenState extends State<VentasScreen> {
             const SizedBox(height: 20),
             const Text(
               'Productos:',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             Expanded(
               child: ListView.builder(
@@ -107,9 +132,16 @@ class _VentasScreenState extends State<VentasScreen> {
                 itemBuilder: (context, index) {
                   final producto = productos[index];
                   return ListTile(
-                    title: Text(producto['nombre']),
+                    title: Text(
+                      producto['nombre'],
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                     subtitle: Text(
                       '\$${producto['precio'].toStringAsFixed(2)}',
+                      style: const TextStyle(fontSize: 16),
                     ),
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,
@@ -118,7 +150,13 @@ class _VentasScreenState extends State<VentasScreen> {
                           onPressed: () => _disminuirCantidad(index),
                           icon: const Icon(Icons.remove),
                         ),
-                        Text('${producto['cantidad']}'),
+                        Text(
+                          '${producto['cantidad']}',
+                          style: const TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                         IconButton(
                           onPressed: () => _aumentarCantidad(index),
                           icon: const Icon(Icons.add),

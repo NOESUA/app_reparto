@@ -67,7 +67,13 @@ class _MetodoPagoScreenState extends State<MetodoPagoScreen> {
 
     if (!usarCredito && totalPagado < widget.totalVenta) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('El total pagado es insuficiente')),
+        const SnackBar(
+          content: Text(
+            'El total pagado es insuficiente',
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          ),
+          backgroundColor: Colors.orange,
+        ),
       );
       return;
     }
@@ -126,9 +132,18 @@ class _MetodoPagoScreenState extends State<MetodoPagoScreen> {
 
               Navigator.pop(context); // Cierra diálogo
               Navigator.pop(context); // Regresa a la pantalla anterior
-              ScaffoldMessenger.of(
-                context,
-              ).showSnackBar(const SnackBar(content: Text('Pago registrado')));
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text(
+                    'Pago registrado',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  backgroundColor: Colors.orange,
+                ),
+              );
             },
             child: const Text('Confirmar'),
           ),
