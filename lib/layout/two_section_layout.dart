@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:app_soda/core/theme.dart';
+import 'package:app_reparto/core/theme.dart';
 
 /// Layout reutilizable con dos secciones: encabezado y contenido
 class TwoSectionLayout extends StatelessWidget {

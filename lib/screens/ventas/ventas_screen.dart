@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:app_soda/screens/ventas/metodo_pago_screen.dart';
+import 'package:app_reparto/screens/ventas/metodo_pago_screen.dart';
 
 class VentasScreen extends StatefulWidget {
   const VentasScreen({super.key});

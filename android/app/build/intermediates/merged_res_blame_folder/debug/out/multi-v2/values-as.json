@@ -1,0 +1,19 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.example.app_reparto.app-mergeDebugResources-6:/values-as/values-as.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\Noelia\\.gradle\\caches\\8.12\\transforms\\e84cfede1b516013d1fb43527451a505\\transformed\\core-1.6.0\\res\\values-as\\values-as.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        }
+    ]
+}

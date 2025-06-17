@@ -199,18 +199,16 @@ class _MetodoPagoScreenState extends State<MetodoPagoScreen> {
                 prefixIcon: Icon(Icons.money),
                 border: OutlineInputBorder(),
               ),
-              onChanged: (_) => setState(() {}),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 10),
             TextField(
               controller: transferenciaController,
               keyboardType: TextInputType.number,
               decoration: const InputDecoration(
                 labelText: 'Transferencia',
-                prefixIcon: Icon(Icons.phone_android),
+                prefixIcon: Icon(Icons.account_balance),
                 border: OutlineInputBorder(),
               ),
-              onChanged: (_) => setState(() {}),
             ),
             const SizedBox(height: 20),
             SwitchListTile(

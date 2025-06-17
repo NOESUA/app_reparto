@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:app_soda/core/theme.dart';
-import 'package:app_soda/main.dart'; // Para acceso a Routes
+import 'package:app_reparto/core/theme.dart';
 
 /// Drawer lateral con las principales secciones de la app
 class AppDrawer extends StatelessWidget {
-  const AppDrawer({super.key});
+  final Function(int) onDestinationSelected;
+  final int selectedIndex;
+
+  const AppDrawer({
+    super.key,
+    required this.onDestinationSelected,
+    required this.selectedIndex,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -32,21 +38,72 @@ class AppDrawer extends StatelessWidget {
           ),
 
           // Items del menú
-          _DrawerItem(label: '👤 Mi perfil', route: Routes.perfil),
           _DrawerItem(
-            label: '📋 Gestión de Clientes',
-            route: Routes.clientesLista,
+            label: '👤 Mi perfil',
+            icon: Icons.person,
+            index: 7,
+            selectedIndex: selectedIndex,
+            onTap: onDestinationSelected,
+          ),
+          _DrawerItem(
+            label: '👥 Clientes',
+            icon: Icons.people,
+            index: 1,
+            selectedIndex: selectedIndex,
+            onTap: onDestinationSelected,
           ),
           _DrawerItem(
             label: '🛒 Registro de Productos',
-            route: Routes.productos,
+            icon: Icons.inventory,
+            index: 3,
+            selectedIndex: selectedIndex,
+            onTap: onDestinationSelected,
           ),
-          _DrawerItem(label: '💳 Gestión de Pagos', route: Routes.ventas),
-          _DrawerItem(label: '📈 Reportes', route: Routes.reportes),
-          _DrawerItem(label: '🗺️ Gestión de Rutas', route: Routes.recorridos),
-          _DrawerItem(label: '⚙️ Configuración', route: Routes.configuracion),
+          _DrawerItem(
+            label: '💳 Gestión de Pagos',
+            icon: Icons.shopping_cart,
+            index: 2,
+            selectedIndex: selectedIndex,
+            onTap: onDestinationSelected,
+          ),
+          _DrawerItem(
+            label: '📈 Reportes',
+            icon: Icons.bar_chart,
+            index: 5,
+            selectedIndex: selectedIndex,
+            onTap: onDestinationSelected,
+          ),
+          _DrawerItem(
+            label: '🗺️ Gestión de Rutas',
+            icon: Icons.route,
+            index: 4,
+            selectedIndex: selectedIndex,
+            onTap: onDestinationSelected,
+          ),
+          _DrawerItem(
+            label: '🚗 Vehículo',
+            icon: Icons.directions_car,
+            index: 6,
+            selectedIndex: selectedIndex,
+            onTap: onDestinationSelected,
+          ),
+          _DrawerItem(
+            label: '⚙️ Configuración',
+            icon: Icons.settings,
+            index: 8,
+            selectedIndex: selectedIndex,
+            onTap: onDestinationSelected,
+          ),
           const Divider(color: Colors.white24),
-          _DrawerItem(label: '🚪 Cerrar sesión', route: Routes.logout),
+          _DrawerItem(
+            label: '🚪 Cerrar sesión',
+            icon: Icons.logout,
+            index: -1,
+            selectedIndex: selectedIndex,
+            onTap: (index) {
+              // TODO: Implementar cierre de sesión
+            },
+          ),
         ],
       ),
     );
@@ -56,22 +113,40 @@ class AppDrawer extends StatelessWidget {
 /// Widget privado para un item del Drawer
 class _DrawerItem extends StatelessWidget {
   final String label;
-  final String route;
+  final IconData icon;
+  final int index;
+  final int selectedIndex;
+  final Function(int) onTap;
 
-  const _DrawerItem({required this.label, required this.route});
+  const _DrawerItem({
+    required this.label,
+    required this.icon,
+    required this.index,
+    required this.selectedIndex,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final isSelected = index == selectedIndex;
+    
     return ListTile(
-      title: Text(label, style: theme.textTheme.bodyLarge),
+      leading: Icon(icon, color: isSelected ? AppColors.primario : null),
+      title: Text(
+        label,
+        style: theme.textTheme.bodyLarge?.copyWith(
+          color: isSelected ? AppColors.primario : null,
+        ),
+      ),
       onTap: () {
         Navigator.pop(context);
-        Navigator.pushReplacementNamed(context, route);
+        onTap(index);
       },
       contentPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 4),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       hoverColor: AppColors.primario.withAlpha(26),
+      selected: isSelected,
     );
   }
 }

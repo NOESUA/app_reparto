@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:app_soda/core/theme.dart';
+import 'package:app_reparto/core/theme.dart';
 
 /// Botón personalizado con estilo consistente en toda la app
 class CustomButton extends StatelessWidget {

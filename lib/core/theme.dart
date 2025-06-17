@@ -12,7 +12,7 @@ class AppColors {
 /// Tema global de la app combinando colores, tipografía y estilos de componentes
 final ThemeData appTheme = ThemeData(
   brightness: Brightness.dark,
-  colorScheme: ColorScheme.dark(
+  colorScheme: const ColorScheme.dark(
     primary: AppColors.primario,
     secondary: AppColors.acento,
     error: AppColors.error,
@@ -116,7 +116,7 @@ final ThemeData appTheme = ThemeData(
   ),
 
   // Tema para bottom navigation bar
-  bottomNavigationBarTheme: BottomNavigationBarThemeData(
+  bottomNavigationBarTheme: const BottomNavigationBarThemeData(
     backgroundColor: AppColors.fondoBottomNav,
     selectedItemColor: AppColors.primario,
     unselectedItemColor: Colors.grey,
@@ -128,26 +128,26 @@ final ThemeData appTheme = ThemeData(
   inputDecorationTheme: InputDecorationTheme(
     filled: true,
     fillColor: AppColors.fondoOscuro,
-    labelStyle: TextStyle(
+    labelStyle: const TextStyle(
       color: Colors.white70,
       fontSize: 16,
       fontWeight: FontWeight.w500,
     ),
-    hintStyle: TextStyle(color: Colors.white54, fontSize: 16),
+    hintStyle: const TextStyle(color: Colors.white54, fontSize: 16),
     prefixIconColor: AppColors.primario,
-    border: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(32),
+    border: const OutlineInputBorder(
+      borderRadius: BorderRadius.all(Radius.circular(32)),
       borderSide: BorderSide(color: Colors.white24),
     ),
-    enabledBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(32),
+    enabledBorder: const OutlineInputBorder(
+      borderRadius: BorderRadius.all(Radius.circular(32)),
       borderSide: BorderSide(color: Colors.white24),
     ),
-    focusedBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(32),
+    focusedBorder: const OutlineInputBorder(
+      borderRadius: BorderRadius.all(Radius.circular(32)),
       borderSide: BorderSide(color: AppColors.primario, width: 2),
     ),
-    contentPadding: EdgeInsets.symmetric(vertical: 18, horizontal: 24),
+    contentPadding: const EdgeInsets.symmetric(vertical: 18, horizontal: 24),
   ),
 
   // Botones elevados optimizados para uso táctil
@@ -155,20 +155,20 @@ final ThemeData appTheme = ThemeData(
     style: ElevatedButton.styleFrom(
       backgroundColor: AppColors.primario,
       foregroundColor: Colors.white,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
-      minimumSize: Size.fromHeight(56),
-      textStyle: TextStyle(
+      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(32))),
+      minimumSize: const Size.fromHeight(56),
+      textStyle: const TextStyle(
         fontSize: 18,
         fontWeight: FontWeight.bold,
         letterSpacing: 0.5,
       ),
-      padding: EdgeInsets.symmetric(vertical: 18, horizontal: 32),
+      padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 32),
       elevation: 2,
     ),
   ),
 
   // AppBar optimizada
-  appBarTheme: AppBarTheme(
+  appBarTheme: const AppBarTheme(
     backgroundColor: AppColors.primario,
     foregroundColor: Colors.white,
     elevation: 0,
@@ -183,13 +183,13 @@ final ThemeData appTheme = ThemeData(
   ),
 
   // Card theme corregido para la versión de Flutter que espera CardThemeData
-  cardTheme: CardThemeData(
+  cardTheme: const CardTheme(
     color: AppColors.primario,
     elevation: 2,
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(32))),
     margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
   ),
 
   // Icon theme global
-  iconTheme: IconThemeData(color: Colors.white, size: 24),
+  iconTheme: const IconThemeData(color: Colors.white, size: 24),
 );
